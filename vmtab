@@ -1,0 +1,5 @@
+stress-ng: info:  [915] stressor       bogo ops real time  usr time  sys time   bogo ops/s   bogo ops/s
+stress-ng: info:  [915]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: info:  [915] vm               187274     10.00     17.06      0.73     18721.99     10526.93
+stress-ng: info:  [1075] vm                44374     10.22     18.65      1.74      4342.31      2176.26
+stress-ng: info:  [1114] vm                33418     10.00     17.75      1.98      3341.37      1693.77

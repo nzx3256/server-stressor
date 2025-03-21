@@ -1,0 +1,5 @@
+stress-ng: info:  [704] stressor       bogo ops real time  usr time  sys time   bogo ops/s   bogo ops/s
+stress-ng: info:  [704]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: info:  [704] cpu                 790     10.23      7.36      0.02        77.20       107.05
+stress-ng: info:  [1069] cpu                 384     10.00      9.51      0.00        38.40        40.38
+stress-ng: info:  [1105] cpu                 512     10.00     11.41      0.00        51.20        44.87

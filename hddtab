@@ -1,0 +1,4 @@
+stress-ng: info:  [1051] stressor       bogo ops real time  usr time  sys time   bogo ops/s   bogo ops/s
+stress-ng: info:  [1051]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: info:  [1051] hdd                3067     10.00      0.07      1.17       306.61      2473.39
+stress-ng: info:  [1091] hdd                3700     10.00      0.10      0.67       369.93      4805.19

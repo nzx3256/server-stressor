@@ -1,0 +1,5 @@
+stress-ng: info:  [1043] stressor       bogo ops real time  usr time  sys time   bogo ops/s   bogo ops/s
+stress-ng: info:  [1043]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: info:  [1043] ramfs              1981     11.13      0.00      0.00       177.95         0.00
+stress-ng: info:  [1083] ramfs               982     11.00      0.00      0.00        89.27         0.00
+stress-ng: info:  [1122] ramfs              1137     11.01      0.00      0.00       103.31         0.00

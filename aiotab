@@ -1,0 +1,4 @@
+stress-ng: info:  [1061] stressor       bogo ops real time  usr time  sys time   bogo ops/s   bogo ops/s
+stress-ng: info:  [1061]                           (secs)    (secs)    (secs)   (real time) (usr+sys time)
+stress-ng: info:  [1061] aio              137129     10.22      7.07     11.52     13419.65      7376.49
+stress-ng: info:  [1097] aio              127093     10.21      6.82     10.51     12447.86      7333.70
