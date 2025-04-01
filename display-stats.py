@@ -5,7 +5,7 @@ import sys
 
 def prompt() -> int:
     while True:
-        print("Enter a setting table to view:\n\t1) cpu\n\t2) vm\n\t3) ramfs\n\t4) hdd\n\t5) aio\n-1) exit\n")
+        print("Enter which table to view:\n\t1) cpu\n\t2) vm\n\t3) ramfs\n\t4) hdd\n\t5) aio\n-1) exit\n")
         inp = input("-> ")
         try:
             inp = int(inp)
@@ -15,7 +15,7 @@ def prompt() -> int:
         if inp >= 1 and inp <= 5 or inp == -1:
             break
         else:
-            print("not a valid input\n")
+            print("not an option. try again\n")
     return inp
 
 def main() -> int:
@@ -36,9 +36,8 @@ def main() -> int:
         else:
             break
         if filename != "":
-            print("\n"+filename+":")
-            system("cat "+filename)
-            print()
+            system("less "+filename)
+            print(filename+" opened\n")
     return 0
 
 if __name__ == "__main__":
