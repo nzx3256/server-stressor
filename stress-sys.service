@@ -1,0 +1,9 @@
+[Unit]
+Description=Stress test the system forever
+
+[Service]
+Type=idle
+ExecStart=/opt/stress-app/stress-sys.sh
+
+[Install]
+WantedBy=multi-user.target

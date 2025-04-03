@@ -1,47 +1,44 @@
 #!/bin/bash
+#bash script for stress-sys daemon
 
-if [ -e /home/jordan_castelino/cloud-project/cputab ]; then
-	i=1
+#class list and log directory
+classes=('cpu' 'vm' 'ramfs' 'hdd' 'aio')
+if [[ -d "/opt/stress-app" ]]; then
+	logdir="/opt/stress-app/"
 else
-	i=3
-	touch /home/jordan_castelino/cloud-project/cputab
+	echo -e "You must execute install.sh before running this script:\n\tsudo ./install.sh"
+	exit 1
 fi
-if [ -e /home/jordan_castelino/cloud-project/vmtab ]; then
-	i=1
-else
-	i=3
-	touch /home/jordan_castelino/cloud-project/vmtab
-fi
-if [ -e /home/jordan_castelino/cloud-project/ramfstab ]; then
-	i=1
-else
-	i=3
-	touch /home/jordan_castelino/cloud-project/ramfstab
-fi
-if [ -e /home/jordan_castelino/cloud-project/hddtab ]; then
-	i=1
-else
-	i=3
-	touch /home/jordan_castelino/cloud-project/hddtab
-fi
-if [ -e /home/jordan_castelino/cloud-project/aiotab ]; then
-	i=1
-else
-	i=3
-	touch /home/jordan_castelino/cloud-project/aiotab
-fi
+declare -i i=0
+declare -a tabi=()
+for filename in "${classes[@]}"; do
+	path=$(expr $logdir$filename"tab")
+	if [[ -f $path && $(wc -l $path|gawk '{print $1}') -gt 0 ]]; then
+		tabi[i]+=1
+	else
+		tabi[i]+=3
+		sudo touch $path
+	fi
+	((i++))
+done
+echo ${tabi[@]}
 
+b=true
 while true
 do
-	sleep 1s
-	sudo stress-ng --cpu 0 --cpu-load 50 -t 5s --metrics-brief 2>&1 | tail -$i >> /home/jordan_castelino/cloud-project/cputab
-	sleep 1s
-	sudo stress-ng --vm 0 --vm-bytes 25% -t 5s --metrics-brief 2>&1 | tail -$i >> /home/jordan_castelino/cloud-project/vmtab
-	sleep 1s
-	sudo stress-ng --ramfs 0 -t 5s --metrics-brief 2>&1 | tail -$i >> /home/jordan_castelino/cloud-project/ramfstab
-	sleep 1s
-	sudo stress-ng --hdd 0 --hdd-opts direct,sync,dsync,fsync,utimes -t 5s --metrics-brief 2>&1 | tail -$i >> /home/jordan_castelino/cloud-project/hddtab
-	sleep 1s
-	sudo stress-ng --aio 0 --aio-requests 128 -t 5s --metrics-brief 2>&1 | tail -$i >> /home/jordan_castelino/cloud-project/aiotab
-	i=1
+	i=0
+	while [ $i -lt "${#classes[@]}" ]; do
+		sleep 1s
+		path=$(expr $logdir${classes[$i]}"tab")
+		sudo stress-ng --${classes[$i]} 0 -t 1s --metrics-brief --oomable 2>&1 | tail -${tabi[$i]} >> $path
+		((i++))
+	done
+	if $b; then
+		i=0
+		while [ $i -lt "${#tabi[@]}" ]; do
+			tabi[$i]=1
+			((i++))
+		done
+		b=false
+	fi
 done
