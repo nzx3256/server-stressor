@@ -1,3 +1,4 @@
 *tab
 .venv/
 .nor
+__pycache__/

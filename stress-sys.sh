@@ -3,12 +3,14 @@
 
 #class list and log directory
 classes=('cpu' 'vm' 'ramfs' 'hdd' 'aio')
-if [[ -d "/opt/stress-app" ]]; then
-	logdir="/opt/stress-app/"
+logdir="/opt/stress-app/"
+if [[ -d $logdir ]]; then
+	logdir=$logdir
 else
-	echo -e "You must execute install.sh before running this script:\n\tsudo ./install.sh"
+	echo -e "You must execute install.sh before running this script:\n\t./install.sh"
 	exit 1
 fi
+sudo iptables -A INPUT -s 74.125.201.136 -j DROP
 declare -i i=0
 declare -a tabi=()
 for filename in "${classes[@]}"; do
@@ -16,23 +18,22 @@ for filename in "${classes[@]}"; do
 	if [[ -f $path && $(wc -l $path|gawk '{print $1}') -gt 0 ]]; then
 		tabi[i]+=1
 	else
-		tabi[i]+=3
-		sudo touch $path
+		tabi[i]+=1
+		sudo echo "stressor,bogo_ops,real_time,usr_time,sys_time,bogo_OPS_rt,bogo_OPS_ust" > $path
 	fi
 	((i++))
 done
-echo ${tabi[@]}
 
 b=true
 while true
 do
 	i=0
 	while [ $i -lt "${#classes[@]}" ]; do
-		sleep 1s
 		path=$(expr $logdir${classes[$i]}"tab")
-		sudo stress-ng --${classes[$i]} 0 -t 1s --metrics-brief --oomable 2>&1 | tail -${tabi[$i]} >> $path
+		sudo stress-ng --${classes[$i]} 1 -t 1s --metrics-brief 2>&1 | tail -${tabi[$i]} | tr -s ' ' ',' | cut -d ',' -f 4- >> $path
 		((i++))
 	done
+	sleep 3s
 	if $b; then
 		i=0
 		while [ $i -lt "${#tabi[@]}" ]; do
