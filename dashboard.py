@@ -1,3 +1,4 @@
+# dashboard app
 import os
 from sys import exit
 from signal import SIGINT, signal
@@ -6,19 +7,21 @@ import plotly.express as px
 import pandas as pd
 import numpy as np
 
+# verify installation
 INSTALL_LOC = '/opt/stress-app'
 if not os.path.exists(INSTALL_LOC):
     print('must install stress-app through install.sh')
     print('\tsudo ./install.sh')
     exit(1)
+# initial graph setup
 df = pd.read_csv(INSTALL_LOC+"/cputab")
 fig=px.line(data_frame=df,y='bogo_ops',x=np.arange(0,df.shape[0]), title="%CPU Usage")
-
 
 app = Dash(server=True
     ,external_stylesheets=['https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css']
 )
 
+# html doc setup
 app.layout = [
     html.H1(className='navbar; text-center',id='title-text', children=[html.Div(children='System Statistics')],style={'background-color':'red'}),
     html.Br(),
@@ -60,6 +63,7 @@ app.layout = [
     html.Footer(id='footer')
 ]
 
+# update display graph when input properties are changed
 @callback(
     Output(component_id='graph-div', component_property='children'),
     Input(component_id='tab-group', component_property='value'),
@@ -90,6 +94,7 @@ def update_displayedGraph(tab,radio_option,_) -> html.Div:
         dcc.Graph(figure=fig)
     ])
 
+# signal handling sigint
 def sigint_handle(sig, frame):
     exit(0)
 

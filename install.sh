@@ -1,5 +1,10 @@
 #!/bin/bash
 
+sudo apt install python3-virtualenv -y
+sudo apt install stress-ng -y
+if [[ ! -d .venv ]]; then
+	virtualenv .venv
+fi
 sudo cp stress-sys.service /lib/systemd/system
 sudo cp stress_app /etc/cron.d
 sudo chmod 744 stress-sys.sh

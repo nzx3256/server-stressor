@@ -10,7 +10,9 @@ else
 	echo -e "You must execute install.sh before running this script:\n\t./install.sh"
 	exit 1
 fi
+# firewall rule to block youtube IP
 sudo iptables -A INPUT -s 74.125.201.136 -j DROP
+# old set up for tables and header line
 declare -i i=0
 declare -a tabi=()
 for filename in "${classes[@]}"; do
@@ -24,9 +26,11 @@ for filename in "${classes[@]}"; do
 	((i++))
 done
 
+# stress-ng forever loop
 b=true
 while true
 do
+	# sequentially run each stressor class
 	i=0
 	while [ $i -lt "${#classes[@]}" ]; do
 		path=$(expr $logdir${classes[$i]}"tab")
